@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
+-- Various imports for Spock and stuff
 import Web.Spock
 import Web.Spock.Config
 
@@ -18,26 +19,29 @@ import Data.HashMap.Strict as HM (lookup)
 import Control.Monad (forM, mzero)
 
 
+-- "Live long and prosper - Spock"
 
-
+-- Stuff to make Spock work (documentation with examples is awful) (ノಠ益ಠ)ノ彡┻━┻
 data MySession = EmptySession
 data MyAppState = DummyAppState (IORef Int)
 
 type Api = SpockM () () () ()
 type ApiAction a = SpockAction () () () a
 
+-- Initialise spock with defaults etc
 main :: IO ()
 main =
     do ref <- newIORef 0
        spockCfg <- defaultSpockCfg () PCNoDatabase ()
        runSpock 8080 (spock spockCfg app)
 
-
+-- Add cors headers, doesn't work locally for me, but works on my server ¯\_(ツ)_/¯
 corsHeader =
   do ctx <- getContext
      setHeader "Access-Control-Allow-Origin" "*"
      pure ctx
 
+-- Provides the webserver routes, and adds the cors header (when it feels like it)
 app :: Api
 app =
     prehook corsHeader $
@@ -50,7 +54,7 @@ app =
 
 
 
-
+-- Magic (づ｡◕‿‿◕｡)づ
 returnSolvedGrid :: Grid -> [Grid]
 returnSolvedGrid grid = do
     let solvedGrid = L.solve grid
@@ -58,6 +62,7 @@ returnSolvedGrid grid = do
 
 
 -- Not that these are from Level.hs an all credit goes to Michael Gale for their creation
+-- (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ ✧ﾟ･: *ヽ(◕ヮ◕ヽ) 
 instance ToJSON Action where 
     toJSON (Add n) = object [ "action"  .= ("add" :: String)
                             , "operand" .= n 
@@ -74,7 +79,7 @@ instance FromJSON Action where
             _ -> mzero
 
 instance ToJSON Cell where 
-    toJSON (MkCell truth a) = object ["truth" .= truth, "act" .= toJSON a]
+    toJSON (MkCell truth a) = object ["truth" .= truth, "act" .= toJSON a] -- My single change ( ͡° ͜ʖ ͡°)
 
 instance FromJSON Cell where 
     parseJSON v = MkCell False <$> parseJSON v
