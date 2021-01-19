@@ -48,17 +48,14 @@ app =
        do
            get root $
                text "POST a JSON formatted grid to /grid and it will return the solution (if any)"
-           post "grid" $ do
-               theGrid <- jsonBody' :: ApiAction Grid
-               Web.Spock.json (returnSolvedGrid theGrid)
+           post "grid-solve" $ do
+               theGrid <- jsonBody' :: ApiAction Grid   
+               Web.Spock.json (L.solve theGrid)
+           post "grid-steps" $ do
+               theGrid <- jsonBody' :: ApiAction Grid   
+               Web.Spock.json (L.steps theGrid) 
 
 
-
--- Magic (づ｡◕‿‿◕｡)づ
-returnSolvedGrid :: Grid -> [Grid]
-returnSolvedGrid grid = do
-    let solvedGrid = L.solve grid
-    if solvedGrid == [] then L.steps grid else solvedGrid
 
 
 -- Not that these are from Level.hs an all credit goes to Michael Gale for their creation
