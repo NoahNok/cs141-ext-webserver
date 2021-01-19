@@ -18,7 +18,9 @@ All credit goes to Michael Gale for them.
 
 ### Solving implementation
 
-This works by first calling **solve** on the grid, if it returns a list of grids then we return them to the request, if it doesn't we then try to get a solution using **steps**. If this is fails we return an empty list, otherwise we return the list of grids that are the rotations
+We have two POST routes available. The first is **/grid-solve** which accepts a JSON formatted grid and will return any grids that directly solve it on an empty array **[]**
+
+If **grid-solve** is empty then you should proceed to POST to **/grid-steps** which accepts the same JSON formatted grid and will also return a list of grids that result in the solution via rotations, or an empty array if it can't be solved.
 
 ## Running
 
@@ -47,7 +49,7 @@ then running
 main
 ```
 
-Then post a request to _localhost:8080/grid_ where the post body is the JSON
+Then post a request to **localhost:8080/grid-solve** or **localhost:8080/grid-steps**  where the post body is the JSON
 E.g.
 
 ```json
