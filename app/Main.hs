@@ -48,10 +48,10 @@ app =
        do
            get root $
                text "POST a JSON formatted grid to /grid and it will return the solution (if any)"
-           post "grid-solve" $ do
+           post "grid-solve" $ do -- Solve a grid via 'solve'
                theGrid <- jsonBody' :: ApiAction Grid   
                Web.Spock.json (L.solve theGrid)
-           post "grid-steps" $ do
+           post "grid-steps" $ do -- Solve a grid via 'steps', should only call this route after checking steps first
                theGrid <- jsonBody' :: ApiAction Grid   
                Web.Spock.json (L.steps theGrid) 
 
