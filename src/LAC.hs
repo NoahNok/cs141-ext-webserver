@@ -5,6 +5,7 @@
 
 module LAC where 
 import Data.Either
+import Data.List
 --------------------------------------------------------------------------------
 
 -- | Represents different actions (including their parameters) that a cell can 
@@ -325,8 +326,9 @@ getColsAsMkRows (target:nextT) (x:xs) = MkRow target x : getColsAsMkRows nextT x
 --
 -- The end result is the columns
 getCols :: [[Cell]] -> [[Cell]]
-getCols [] = [[]] 
-getCols xs = [getCol p xs | p <- [0..(length (head xs)-1)]]
+getCols = transpose
+--getCols [] = [[]] 
+--getCols xs = [getCol p xs | p <- [0..(length (head xs)-1)]]
 
 -- Computes a singular column at a given index
 -- Each time we look at a row and then get the element at index, by repeating for all rows we get
